@@ -1,4 +1,3 @@
-// TrackioAppApp.swift
 import SwiftUI
 
 @main
