@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		DD7230AF2D06BB0800CD20D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD7230962D06BB0700CD20D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD72309D2D06BB0700CD20D3;
+			remoteInfo = TrackioApp;
+		};
+		DD7230B92D06BB0800CD20D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD7230962D06BB0700CD20D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD72309D2D06BB0700CD20D3;
+			remoteInfo = TrackioApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DD72309E2D06BB0700CD20D3 /* TrackioApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackioApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD7230AE2D06BB0800CD20D3 /* TrackioAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackioAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD7230B82D06BB0800CD20D3 /* TrackioAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackioAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		DD7230A02D06BB0700CD20D3 /* TrackioApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TrackioApp;
+			sourceTree = "<group>";
+		};
+		DD7230B12D06BB0800CD20D3 /* TrackioAppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TrackioAppTests;
+			sourceTree = "<group>";
+		};
+		DD7230BB2D06BB0800CD20D3 /* TrackioAppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TrackioAppUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DD72309B2D06BB0700CD20D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD7230AB2D06BB0800CD20D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD7230B52D06BB0800CD20D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DD7230952D06BB0700CD20D3 = {
+			isa = PBXGroup;
+			children = (
+				DD7230A02D06BB0700CD20D3 /* TrackioApp */,
+				DD7230B12D06BB0800CD20D3 /* TrackioAppTests */,
+				DD7230BB2D06BB0800CD20D3 /* TrackioAppUITests */,
+				DD72309F2D06BB0700CD20D3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DD72309F2D06BB0700CD20D3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DD72309E2D06BB0700CD20D3 /* TrackioApp.app */,
+				DD7230AE2D06BB0800CD20D3 /* TrackioAppTests.xctest */,
+				DD7230B82D06BB0800CD20D3 /* TrackioAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DD72309D2D06BB0700CD20D3 /* TrackioApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD7230C22D06BB0800CD20D3 /* Build configuration list for PBXNativeTarget "TrackioApp" */;
+			buildPhases = (
+				DD72309A2D06BB0700CD20D3 /* Sources */,
+				DD72309B2D06BB0700CD20D3 /* Frameworks */,
+				DD72309C2D06BB0700CD20D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DD7230A02D06BB0700CD20D3 /* TrackioApp */,
+			);
+			name = TrackioApp;
+			packageProductDependencies = (
+			);
+			productName = TrackioApp;
+			productReference = DD72309E2D06BB0700CD20D3 /* TrackioApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DD7230AD2D06BB0800CD20D3 /* TrackioAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD7230C52D06BB0800CD20D3 /* Build configuration list for PBXNativeTarget "TrackioAppTests" */;
+			buildPhases = (
+				DD7230AA2D06BB0800CD20D3 /* Sources */,
+				DD7230AB2D06BB0800CD20D3 /* Frameworks */,
+				DD7230AC2D06BB0800CD20D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DD7230B02D06BB0800CD20D3 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DD7230B12D06BB0800CD20D3 /* TrackioAppTests */,
+			);
+			name = TrackioAppTests;
+			packageProductDependencies = (
+			);
+			productName = TrackioAppTests;
+			productReference = DD7230AE2D06BB0800CD20D3 /* TrackioAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		DD7230B72D06BB0800CD20D3 /* TrackioAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD7230C82D06BB0800CD20D3 /* Build configuration list for PBXNativeTarget "TrackioAppUITests" */;
+			buildPhases = (
+				DD7230B42D06BB0800CD20D3 /* Sources */,
+				DD7230B52D06BB0800CD20D3 /* Frameworks */,
+				DD7230B62D06BB0800CD20D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DD7230BA2D06BB0800CD20D3 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DD7230BB2D06BB0800CD20D3 /* TrackioAppUITests */,
+			);
+			name = TrackioAppUITests;
+			packageProductDependencies = (
+			);
+			productName = TrackioAppUITests;
+			productReference = DD7230B82D06BB0800CD20D3 /* TrackioAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DD7230962D06BB0700CD20D3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+					DD72309D2D06BB0700CD20D3 = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					DD7230AD2D06BB0800CD20D3 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = DD72309D2D06BB0700CD20D3;
+					};
+					DD7230B72D06BB0800CD20D3 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = DD72309D2D06BB0700CD20D3;
+					};
+				};
+			};
+			buildConfigurationList = DD7230992D06BB0700CD20D3 /* Build configuration list for PBXProject "TrackioApp" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DD7230952D06BB0700CD20D3;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = DD72309F2D06BB0700CD20D3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DD72309D2D06BB0700CD20D3 /* TrackioApp */,
+				DD7230AD2D06BB0800CD20D3 /* TrackioAppTests */,
+				DD7230B72D06BB0800CD20D3 /* TrackioAppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DD72309C2D06BB0700CD20D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD7230AC2D06BB0800CD20D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD7230B62D06BB0800CD20D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DD72309A2D06BB0700CD20D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD7230AA2D06BB0800CD20D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD7230B42D06BB0800CD20D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DD7230B02D06BB0800CD20D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DD72309D2D06BB0700CD20D3 /* TrackioApp */;
+			targetProxy = DD7230AF2D06BB0800CD20D3 /* PBXContainerItemProxy */;
+		};
+		DD7230BA2D06BB0800CD20D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DD72309D2D06BB0700CD20D3 /* TrackioApp */;
+			targetProxy = DD7230B92D06BB0800CD20D3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		DD7230C02D06BB0800CD20D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DD7230C12D06BB0800CD20D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DD7230C32D06BB0800CD20D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TrackioApp/Preview Content\"";
+				DEVELOPMENT_TEAM = KK5HUUQ3HR;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trackio.TrackioApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DD7230C42D06BB0800CD20D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TrackioApp/Preview Content\"";
+				DEVELOPMENT_TEAM = KK5HUUQ3HR;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trackio.TrackioApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DD7230C62D06BB0800CD20D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KK5HUUQ3HR;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trackio.TrackioAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrackioApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TrackioApp";
+			};
+			name = Debug;
+		};
+		DD7230C72D06BB0800CD20D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KK5HUUQ3HR;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trackio.TrackioAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrackioApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TrackioApp";
+			};
+			name = Release;
+		};
+		DD7230C92D06BB0800CD20D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KK5HUUQ3HR;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trackio.TrackioAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TrackioApp;
+			};
+			name = Debug;
+		};
+		DD7230CA2D06BB0800CD20D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KK5HUUQ3HR;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trackio.TrackioAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TrackioApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DD7230992D06BB0700CD20D3 /* Build configuration list for PBXProject "TrackioApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD7230C02D06BB0800CD20D3 /* Debug */,
+				DD7230C12D06BB0800CD20D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD7230C22D06BB0800CD20D3 /* Build configuration list for PBXNativeTarget "TrackioApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD7230C32D06BB0800CD20D3 /* Debug */,
+				DD7230C42D06BB0800CD20D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD7230C52D06BB0800CD20D3 /* Build configuration list for PBXNativeTarget "TrackioAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD7230C62D06BB0800CD20D3 /* Debug */,
+				DD7230C72D06BB0800CD20D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD7230C82D06BB0800CD20D3 /* Build configuration list for PBXNativeTarget "TrackioAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD7230C92D06BB0800CD20D3 /* Debug */,
+				DD7230CA2D06BB0800CD20D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DD7230962D06BB0700CD20D3 /* Project object */;
+}
