@@ -43,9 +43,11 @@ struct ContentView: View {
 struct HabitRowView: View {
     let habit: Habit
     @ObservedObject var habitStore: HabitStore
+    @Binding var habitToEdit: Habit?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
+            // Existing habit row content
             HStack {
                 Circle()
                     .fill(habit.color)
@@ -56,6 +58,18 @@ struct HabitRowView: View {
                     Text(habit.title).font(.headline)
                     Text(habit.description).font(.caption).foregroundColor(.gray)
                 }
+                
+                Spacer()
+                
+                Menu {
+                    Button("Edit") { habitToEdit = habit }
+                    Button("Delete", role: .destructive) {
+                        habitStore.deleteHabit(habit.id)
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .foregroundColor(.gray)
+                }
             }
             
             WeekGridView(habit: habit, habitStore: habitStore)
@@ -64,6 +78,26 @@ struct HabitRowView: View {
         .background(Color(.systemBackground))
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 8)
+        .swipeActions(edge: .trailing) {
+            Button(role: .destructive) {
+                habitStore.deleteHabit(habit.id)
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+            
+            Button {
+                habitToEdit = habit
+            } label: {
+                Label("Edit", systemImage: "pencil")
+            }
+            .tint(.blue)
+        }
+        .contextMenu {
+            Button("Edit") { habitToEdit = habit }
+            Button("Delete", role: .destructive) {
+                habitStore.deleteHabit(habit.id)
+            }
+        }
     }
 }
 
