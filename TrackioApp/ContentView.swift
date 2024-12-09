@@ -10,13 +10,11 @@ struct ContentView: View {
             ScrollView {
                 LazyVStack(spacing: 16) {
                     ForEach(habitStore.habits) { habit in
-                        HabitRowView(habit: habit, habitStore: habitStore)
-                            .contextMenu {
-                                Button("Edit") { habitToEdit = habit }
-                                Button("Delete", role: .destructive) {
-                                    habitStore.deleteHabit(habit.id)
-                                }
-                            }
+                        HabitRowView(
+                            habit: habit,
+                            habitStore: habitStore,
+                            habitToEdit: $habitToEdit
+                        )
                     }
                 }
                 .padding()
@@ -39,7 +37,6 @@ struct ContentView: View {
     }
 }
 
-// Subviews
 struct HabitRowView: View {
     let habit: Habit
     @ObservedObject var habitStore: HabitStore
@@ -47,7 +44,6 @@ struct HabitRowView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Existing habit row content
             HStack {
                 Circle()
                     .fill(habit.color)
@@ -67,18 +63,19 @@ struct HabitRowView: View {
                         habitStore.deleteHabit(habit.id)
                     }
                 } label: {
-                    Image(systemName: "ellipsis")
+                    Image(systemName: "ellipsis.circle")
                         .foregroundColor(.gray)
+                        .font(.system(size: 20))
                 }
             }
             
             WeekGridView(habit: habit, habitStore: habitStore)
         }
         .padding()
-        .background(Color(.systemBackground))
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 8)
-        .swipeActions(edge: .trailing) {
+        .background(RoundedRectangle(cornerRadius: 16)
+            .fill(Color(.systemBackground))
+            .shadow(color: .black.opacity(0.05), radius: 8))
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             Button(role: .destructive) {
                 habitStore.deleteHabit(habit.id)
             } label: {
@@ -91,12 +88,6 @@ struct HabitRowView: View {
                 Label("Edit", systemImage: "pencil")
             }
             .tint(.blue)
-        }
-        .contextMenu {
-            Button("Edit") { habitToEdit = habit }
-            Button("Delete", role: .destructive) {
-                habitStore.deleteHabit(habit.id)
-            }
         }
     }
 }
@@ -134,9 +125,12 @@ struct WeekGridView: View {
     
     private func getDaysOfWeek() -> [Date] {
         let calendar = Calendar.current
-        let today = Date()
+        let today = calendar.startOfDay(for: Date())
+        let weekday = calendar.component(.weekday, from: today)
+        let weekStart = calendar.date(byAdding: .day, value: 2-weekday, to: today)!
+        
         return (0...6).compactMap { dayOffset in
-            calendar.date(byAdding: .day, value: dayOffset, to: today)
+            calendar.date(byAdding: .day, value: dayOffset, to: weekStart)
         }
     }
 }
@@ -175,9 +169,10 @@ struct AddHabitView: View {
     @State private var title = ""
     @State private var description = ""
     @State private var selectedColor: Color = .blue
-    @State private var emoji = "📝"
+    @State private var selectedEmoji = "📝"
     
     private let colors: [Color] = [.blue, .green, .orange, .purple, .red, .pink]
+    private let emojis = ["📝", "🏃‍♂️", "📚", "🧘‍♂️", "🎵", "💪", "🎨", "🌱"]
     
     var body: some View {
         NavigationView {
@@ -188,6 +183,22 @@ struct AddHabitView: View {
                 }
                 
                 Section("APPEARANCE") {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(emojis, id: \.self) { emoji in
+                                Text(emoji)
+                                    .font(.system(size: 24))
+                                    .padding(8)
+                                    .background(
+                                        Circle()
+                                            .stroke(selectedEmoji == emoji ? .blue : .clear, lineWidth: 2)
+                                    )
+                                    .onTapGesture { selectedEmoji = emoji }
+                            }
+                        }
+                        .padding(.vertical, 8)
+                    }
+                    
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
                             ForEach(colors, id: \.self) { color in
@@ -209,7 +220,7 @@ struct AddHabitView: View {
                         let habit = Habit(
                             title: title,
                             description: description,
-                            emoji: emoji,
+                            emoji: selectedEmoji,
                             color: selectedColor
                         )
                         habitStore.addHabit(habit)
@@ -230,9 +241,10 @@ struct EditHabitView: View {
     @State private var title: String
     @State private var description: String
     @State private var selectedColor: Color
-    @State private var emoji: String
+    @State private var selectedEmoji: String
     
     private let colors: [Color] = [.blue, .green, .orange, .purple, .red, .pink]
+    private let emojis = ["📝", "🏃‍♂️", "📚", "🧘‍♂️", "🎵", "💪", "🎨", "🌱"]
     
     init(habitStore: HabitStore, habit: Habit) {
         self.habitStore = habitStore
@@ -240,7 +252,7 @@ struct EditHabitView: View {
         _title = State(initialValue: habit.title)
         _description = State(initialValue: habit.description)
         _selectedColor = State(initialValue: habit.color)
-        _emoji = State(initialValue: habit.emoji)
+        _selectedEmoji = State(initialValue: habit.emoji)
     }
     
     var body: some View {
@@ -252,6 +264,22 @@ struct EditHabitView: View {
                 }
                 
                 Section("APPEARANCE") {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(emojis, id: \.self) { emoji in
+                                Text(emoji)
+                                    .font(.system(size: 24))
+                                    .padding(8)
+                                    .background(
+                                        Circle()
+                                            .stroke(selectedEmoji == emoji ? .blue : .clear, lineWidth: 2)
+                                    )
+                                    .onTapGesture { selectedEmoji = emoji }
+                            }
+                        }
+                        .padding(.vertical, 8)
+                    }
+                    
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
                             ForEach(colors, id: \.self) { color in
@@ -273,7 +301,7 @@ struct EditHabitView: View {
                         let updates = Habit.Updates(
                             title: title,
                             description: description,
-                            emoji: emoji,
+                            emoji: selectedEmoji,
                             color: selectedColor
                         )
                         habitStore.updateHabit(habit.id, with: updates)
