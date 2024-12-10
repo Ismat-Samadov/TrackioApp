@@ -1,8 +1,9 @@
 // ViewModels/HabitStore.swift
 
 import SwiftUI
- 
-class HabitStore: ObservableObject  {
+import Combine
+
+class HabitStore: ObservableObject {
     @Published var habits: [Habit] = [] {
         didSet { save() }
     }
@@ -14,7 +15,8 @@ class HabitStore: ObservableObject  {
         }
     }
     
-    // CRUD Operations
+    // MARK: - CRUD Operations
+    
     func addHabit(_ habit: Habit) {
         habits.append(habit)
     }
@@ -46,19 +48,8 @@ class HabitStore: ObservableObject  {
         habits[index] = habit
     }
     
-    // Persistence
-    private func save() {
-        guard let encoded = try? JSONEncoder().encode(habits) else { return }
-        UserDefaults.standard.set(encoded, forKey: "habits.data")
-    }
+    // MARK: - Analytics
     
-    private func loadHabits() {
-        guard let data = UserDefaults.standard.data(forKey: "habits.data"),
-              let decoded = try? JSONDecoder().decode([Habit].self, from: data) else { return }
-        habits = decoded
-    }
-    
-    // Analytics
     func getStreak(for habitId: UUID) -> Int {
         guard let habit = habits.first(where: { $0.id == habitId }) else { return 0 }
         
@@ -73,6 +64,34 @@ class HabitStore: ObservableObject  {
         }
         
         return streak
+    }
+    
+    func getLongestStreak(for habitId: UUID) -> Int {
+        guard let habit = habits.first(where: { $0.id == habitId }) else { return 0 }
+        
+        let calendar = Calendar.current
+        var longestStreak = 0
+        var currentStreak = 0
+        var currentDate = Date()
+        
+        while true {
+            let startOfDay = calendar.startOfDay(for: currentDate)
+            if habit.completedDates.contains(startOfDay) {
+                currentStreak += 1
+                longestStreak = max(longestStreak, currentStreak)
+            } else {
+                currentStreak = 0
+            }
+            
+            guard let previousDay = calendar.date(byAdding: .day, value: -1, to: currentDate) else { break }
+            currentDate = previousDay
+            
+            if calendar.dateComponents([.day], from: previousDay, to: Date()).day ?? 0 > 365 {
+                break
+            }
+        }
+        
+        return longestStreak
     }
     
     func getCompletionRate(for habitId: UUID, days: Int = 7) -> Double {
@@ -96,6 +115,74 @@ class HabitStore: ObservableObject  {
         return Double(completedDays) / Double(days) * 100
     }
     
+    func getWeekdayDistribution(for habitId: UUID) -> [String: Double] {
+        guard let habit = habits.first(where: { $0.id == habitId }) else { return [:] }
+        
+        let weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        let calendar = Calendar.current
+        var distribution: [String: Double] = [:]
+        
+        for (index, day) in weekdays.enumerated() {
+            let completions = habit.completedDates.filter {
+                calendar.component(.weekday, from: $0) - 1 == index
+            }.count
+            distribution[day] = Double(completions)
+        }
+        
+        return distribution
+    }
+    
+    func getMonthlyProgress(for habitId: UUID) -> [Date: Int] {
+        guard let habit = habits.first(where: { $0.id == habitId }) else { return [:] }
+        
+        let calendar = Calendar.current
+        let today = Date()
+        guard let monthAgo = calendar.date(byAdding: .month, value: -1, to: today) else {
+            return [:]
+        }
+        
+        var progress: [Date: Int] = [:]
+        var date = monthAgo
+        
+        while date <= today {
+            let startOfDay = calendar.startOfDay(for: date)
+            progress[startOfDay] = habit.completedDates.contains(startOfDay) ? 1 : 0
+            
+            guard let nextDay = calendar.date(byAdding: .day, value: 1, to: date) else { break }
+            date = nextDay
+        }
+        
+        return progress
+    }
+    
+    func getBestPerformingHabit() -> Habit? {
+        return habits.max { habit1, habit2 in
+            getCompletionRate(for: habit1.id) < getCompletionRate(for: habit2.id)
+        }
+    }
+    
+    func getTotalCompletions() -> Int {
+        habits.reduce(0) { $0 + $1.completedDates.count }
+    }
+    
+    func getAverageCompletionRate(days: Int = 7) -> Double {
+        let rates = habits.map { getCompletionRate(for: $0.id, days: days) }
+        return rates.isEmpty ? 0 : rates.reduce(0, +) / Double(rates.count)
+    }
+    
+    // MARK: - Persistence
+    
+    private func save() {
+        guard let encoded = try? JSONEncoder().encode(habits) else { return }
+        UserDefaults.standard.set(encoded, forKey: "habits.data")
+    }
+    
+    private func loadHabits() {
+        guard let data = UserDefaults.standard.data(forKey: "habits.data"),
+              let decoded = try? JSONDecoder().decode([Habit].self, from: data) else { return }
+        habits = decoded
+    }
+    
     private func createSampleHabits() {
         let samples = [
             Habit(title: "Exercise", description: "Stay active everyday", emoji: "🏃‍♂️", color: .green),
@@ -107,7 +194,8 @@ class HabitStore: ObservableObject  {
     }
 }
 
-// Helper extension for Habit updates
+// MARK: - Habit Updates Helper
+
 extension Habit {
     struct Updates {
         var title: String?
