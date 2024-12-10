@@ -1,3 +1,4 @@
+// Models/Habit.swift
 import SwiftUI
 
 struct Habit: Identifiable, Codable {

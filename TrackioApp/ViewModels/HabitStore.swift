@@ -1,6 +1,8 @@
-import SwiftUI
+// ViewModels/HabitStore.swift
 
-class HabitStore: ObservableObject {
+import SwiftUI
+ 
+class HabitStore: ObservableObject  {
     @Published var habits: [Habit] = [] {
         didSet { save() }
     }

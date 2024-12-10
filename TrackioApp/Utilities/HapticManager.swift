@@ -1,3 +1,4 @@
+// Utilities/HapticManager.swift
 import UIKit
 
 class HapticManager {

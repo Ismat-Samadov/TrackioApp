@@ -1,3 +1,4 @@
+// Utilities/NotificationManager.swift
 import UserNotifications
 
 class NotificationManager: ObservableObject {
