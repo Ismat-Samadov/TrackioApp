@@ -1,9 +1,14 @@
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     @StateObject private var habitStore = HabitStore()
+    @StateObject private var notificationManager = NotificationManager()
     @State private var showingAddHabit = false
     @State private var habitToEdit: Habit?
+    @State private var showingDeleteAlert = false
+    @State private var habitToDelete: UUID?
+    @Environment(\.scenePhase) private var scenePhase
     
     var body: some View {
         NavigationView {
@@ -13,17 +18,27 @@ struct ContentView: View {
                         HabitRowView(
                             habit: habit,
                             habitStore: habitStore,
-                            habitToEdit: $habitToEdit
+                            habitToEdit: $habitToEdit,
+                            onDelete: {
+                                habitToDelete = habit.id
+                                showingDeleteAlert = true
+                            }
                         )
+                        .transition(.opacity.combined(with: .scale))
                     }
                 }
                 .padding()
             }
             .navigationTitle("Habit Tracker")
             .toolbar {
-                Button { showingAddHabit = true } label: {
-                    Image(systemName: "plus")
-                        .font(.system(size: 17, weight: .semibold))
+                Button {
+                    withAnimation(.spring()) {
+                        showingAddHabit = true
+                    }
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .symbolRenderingMode(.hierarchical)
+                        .font(.system(size: 22, weight: .semibold))
                         .foregroundColor(.blue)
                 }
             }
@@ -33,6 +48,23 @@ struct ContentView: View {
             .sheet(item: $habitToEdit) { habit in
                 EditHabitView(habitStore: habitStore, habit: habit)
             }
+            .alert("Delete Habit", isPresented: $showingDeleteAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    if let id = habitToDelete {
+                        withAnimation {
+                            habitStore.deleteHabit(id)
+                        }
+                    }
+                }
+            } message: {
+                Text("Are you sure you want to delete this habit? This action cannot be undone.")
+            }
+            .onChange(of: scenePhase) { oldPhase, newPhase in
+                if newPhase == .active {
+                    notificationManager.requestAuthorization()
+                }
+            }
         }
     }
 }
@@ -41,50 +73,79 @@ struct HabitRowView: View {
     let habit: Habit
     @ObservedObject var habitStore: HabitStore
     @Binding var habitToEdit: Habit?
+    let onDelete: () -> Void
+    
+    private var streak: Int {
+        habitStore.getStreak(for: habit.id)
+    }
+    
+    private var completionRate: Double {
+        habitStore.getCompletionRate(for: habit.id) / 100
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Circle()
-                    .fill(habit.color)
-                    .frame(width: 40, height: 40)
-                    .overlay(Text(habit.emoji))
+                ZStack {
+                    Circle()
+                        .fill(habit.color.opacity(0.2))
+                        .frame(width: 44, height: 44)
+                    
+                    Circle()
+                        .trim(from: 0, to: completionRate)
+                        .stroke(habit.color, lineWidth: 3)
+                        .frame(width: 44, height: 44)
+                        .rotationEffect(.degrees(-90))
+                    
+                    Text(habit.emoji)
+                        .font(.system(size: 20))
+                }
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(habit.title).font(.headline)
-                    Text(habit.description).font(.caption).foregroundColor(.gray)
+                    HStack {
+                        Text(habit.description)
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                        
+                        if streak > 0 {
+                            Text("\(streak)d 🔥")
+                                .font(.caption.bold())
+                                .foregroundColor(.orange)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 2)
+                                .background(Color.orange.opacity(0.2))
+                                .cornerRadius(8)
+                        }
+                    }
                 }
                 
                 Spacer()
                 
                 Menu {
-                    Button("Edit") { habitToEdit = habit }
-                    Button("Delete", role: .destructive) {
-                        habitStore.deleteHabit(habit.id)
-                    }
+                    Button("Edit", systemImage: "pencil") { habitToEdit = habit }
+                    Button("Delete", systemImage: "trash", role: .destructive, action: onDelete)
                 } label: {
-                    Image(systemName: "ellipsis.circle")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 20))
+                    Image(systemName: "ellipsis.circle.fill")
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(.secondary)
+                        .font(.system(size: 24))
                 }
             }
             
             WeekGridView(habit: habit, habitStore: habitStore)
         }
         .padding()
-        .background(RoundedRectangle(cornerRadius: 16)
-            .fill(Color(.systemBackground))
-            .shadow(color: .black.opacity(0.05), radius: 8))
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(.systemBackground))
+                .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+        )
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-            Button(role: .destructive) {
-                habitStore.deleteHabit(habit.id)
-            } label: {
+            Button(role: .destructive, action: onDelete) {
                 Label("Delete", systemImage: "trash")
             }
-            
-            Button {
-                habitToEdit = habit
-            } label: {
+            Button { habitToEdit = habit } label: {
                 Label("Edit", systemImage: "pencil")
             }
             .tint(.blue)
@@ -116,6 +177,7 @@ struct WeekGridView: View {
                         color: habit.color
                     ) {
                         habitStore.toggleHabit(habit.id, date: date)
+                        HapticManager.shared.trigger(.success)
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -141,12 +203,21 @@ struct CheckmarkView: View {
     let color: Color
     let action: () -> Void
     
+    @State private var scale = 1.0
     private var isToday: Bool {
         Calendar.current.isDateInToday(date)
     }
     
     var body: some View {
-        Button(action: action) {
+        Button {
+            withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
+                scale = 1.3
+                action()
+            }
+            withAnimation(.spring(response: 0.2, dampingFraction: 0.6).delay(0.1)) {
+                scale = 1.0
+            }
+        } label: {
             Circle()
                 .strokeBorder(isCompleted ? color : .gray.opacity(0.3), lineWidth: 1.5)
                 .background(Circle().fill(isCompleted ? color : .clear))
@@ -157,6 +228,7 @@ struct CheckmarkView: View {
                         .foregroundColor(.white)
                         .opacity(isCompleted ? 1 : 0)
                 )
+                .scaleEffect(scale)
         }
         .disabled(!isToday)
         .opacity(isToday ? 1 : 0.6)
@@ -170,6 +242,7 @@ struct AddHabitView: View {
     @State private var description = ""
     @State private var selectedColor: Color = .blue
     @State private var selectedEmoji = "📝"
+    @State private var showingAlert = false
     
     private let colors: [Color] = [.blue, .green, .orange, .purple, .red, .pink]
     private let emojis = ["📝", "🏃‍♂️", "📚", "🧘‍♂️", "🎵", "💪", "🎨", "🌱"]
@@ -179,6 +252,7 @@ struct AddHabitView: View {
             Form {
                 Section("HABIT DETAILS") {
                     TextField("Title", text: $title)
+                        .textInputAutocapitalization(.words)
                     TextField("Description", text: $description)
                 }
                 
@@ -191,9 +265,13 @@ struct AddHabitView: View {
                                     .padding(8)
                                     .background(
                                         Circle()
-                                            .stroke(selectedEmoji == emoji ? .blue : .clear, lineWidth: 2)
+                                            .stroke(selectedEmoji == emoji ? selectedColor : .clear, lineWidth: 2)
                                     )
-                                    .onTapGesture { selectedEmoji = emoji }
+                                    .onTapGesture {
+                                        withAnimation(.spring(response: 0.3)) {
+                                            selectedEmoji = emoji
+                                        }
+                                    }
                             }
                         }
                         .padding(.vertical, 8)
@@ -202,33 +280,72 @@ struct AddHabitView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
                             ForEach(colors, id: \.self) { color in
-                                ColorCircleView(color: color, isSelected: color == selectedColor)
-                                    .onTapGesture { selectedColor = color }
+                                Circle()
+                                    .fill(color)
+                                    .frame(width: 30, height: 30)
+                                    .overlay(
+                                        Circle()
+                                            .stroke(.white, lineWidth: 2)
+                                            .opacity(selectedColor == color ? 1 : 0)
+                                    )
+                                    .onTapGesture {
+                                        withAnimation(.spring(response: 0.3)) {
+                                            selectedColor = color
+                                        }
+                                    }
                             }
                         }
                         .padding(.vertical, 8)
                     }
                 }
+                
+                Section {
+                    HStack {
+                        Spacer()
+                        Button("Create Habit") {
+                            createHabit()
+                        }
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(title.isEmpty ? Color.gray : selectedColor)
+                        .cornerRadius(10)
+                        .disabled(title.isEmpty)
+                        Spacer()
+                    }
+                }
+                .listRowBackground(Color.clear)
             }
             .navigationTitle("New Habit")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
-                        let habit = Habit(
-                            title: title,
-                            description: description,
-                            emoji: selectedEmoji,
-                            color: selectedColor
-                        )
-                        habitStore.addHabit(habit)
-                        dismiss()
-                    }
-                    .disabled(title.isEmpty)
-                }
             }
+            .alert("Invalid Title", isPresented: $showingAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Please enter a title for your habit.")
+            }
+        }
+    }
+    
+    private func createHabit() {
+        guard !title.isEmpty else {
+            showingAlert = true
+            return
+        }
+        
+        withAnimation {
+            let habit = Habit(
+                title: title,
+                description: description,
+                emoji: selectedEmoji,
+                color: selectedColor
+            )
+            habitStore.addHabit(habit)
+            HapticManager.shared.trigger(.success)
+            dismiss()
         }
     }
 }
@@ -242,6 +359,7 @@ struct EditHabitView: View {
     @State private var description: String
     @State private var selectedColor: Color
     @State private var selectedEmoji: String
+    @State private var showingDeleteAlert = false
     
     private let colors: [Color] = [.blue, .green, .orange, .purple, .red, .pink]
     private let emojis = ["📝", "🏃‍♂️", "📚", "🧘‍♂️", "🎵", "💪", "🎨", "🌱"]
@@ -260,6 +378,7 @@ struct EditHabitView: View {
             Form {
                 Section("HABIT DETAILS") {
                     TextField("Title", text: $title)
+                        .textInputAutocapitalization(.words)
                     TextField("Description", text: $description)
                 }
                 
@@ -272,9 +391,13 @@ struct EditHabitView: View {
                                     .padding(8)
                                     .background(
                                         Circle()
-                                            .stroke(selectedEmoji == emoji ? .blue : .clear, lineWidth: 2)
+                                            .stroke(selectedEmoji == emoji ? selectedColor : .clear, lineWidth: 2)
                                     )
-                                    .onTapGesture { selectedEmoji = emoji }
+                                    .onTapGesture {
+                                        withAnimation(.spring(response: 0.3)) {
+                                            selectedEmoji = emoji
+                                        }
+                                    }
                             }
                         }
                         .padding(.vertical, 8)
@@ -283,11 +406,34 @@ struct EditHabitView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
                             ForEach(colors, id: \.self) { color in
-                                ColorCircleView(color: color, isSelected: color == selectedColor)
-                                    .onTapGesture { selectedColor = color }
+                                Circle()
+                                    .fill(color)
+                                    .frame(width: 30, height: 30)
+                                    .overlay(
+                                        Circle()
+                                            .stroke(.white, lineWidth: 2)
+                                            .opacity(selectedColor == color ? 1 : 0)
+                                    )
+                                    .onTapGesture {
+                                        withAnimation(.spring(response: 0.3)) {
+                                            selectedColor = color
+                                        }
+                                    }
                             }
                         }
                         .padding(.vertical, 8)
+                    }
+                }
+                
+                Section {
+                    Button(role: .destructive) {
+                        showingDeleteAlert = true
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("Delete Habit")
+                            Spacer()
+                        }
                     }
                 }
             }
@@ -305,27 +451,21 @@ struct EditHabitView: View {
                             color: selectedColor
                         )
                         habitStore.updateHabit(habit.id, with: updates)
+                        HapticManager.shared.trigger(.success)
                         dismiss()
                     }
                     .disabled(title.isEmpty)
                 }
             }
+            .alert("Delete Habit", isPresented: $showingDeleteAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    habitStore.deleteHabit(habit.id)
+                    dismiss()
+                }
+            } message: {
+                Text("Are you sure you want to delete this habit? This action cannot be undone.")
+            }
         }
-    }
-}
-
-struct ColorCircleView: View {
-    let color: Color
-    let isSelected: Bool
-    
-    var body: some View {
-        Circle()
-            .fill(color)
-            .frame(width: 30, height: 30)
-            .overlay(
-                Circle()
-                    .stroke(.white, lineWidth: 2)
-                    .opacity(isSelected ? 1 : 0)
-            )
     }
 }
