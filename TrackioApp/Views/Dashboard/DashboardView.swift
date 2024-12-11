@@ -13,9 +13,13 @@ struct AnalyticsDashboardView: View {
     // MARK: - Properties
     @StateObject private var viewModel: DashboardViewModel
     @Environment(\.colorScheme) private var colorScheme
+    @State private var showingExportView = false
+    @State private var showingShareSheet = false
+    private let habitStore: HabitStore
     
     // MARK: - Initialization
     init(habitStore: HabitStore) {
+        self.habitStore = habitStore
         _viewModel = StateObject(wrappedValue: DashboardViewModel(habitStore: habitStore))
     }
     
@@ -39,12 +43,28 @@ struct AnalyticsDashboardView: View {
             .navigationTitle("Analytics")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    shareButton
+                    Menu {
+                        Button(action: shareAnalytics) {
+                            Label("Share Summary", systemImage: "square.and.arrow.up")
+                        }
+                        Button(action: { showingExportView = true }) {
+                            Label("Export Data", systemImage: "arrow.down.doc")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                            .symbolRenderingMode(.hierarchical)
+                    }
                 }
                 
                 ToolbarItem(placement: .navigationBarLeading) {
                     refreshButton
                 }
+            }
+            .sheet(isPresented: $showingExportView) {
+                DataExportView(
+                    habitStore: habitStore,
+                    analytics: viewModel.habitAnalytics
+                )
             }
         }
         .navigationViewStyle(.stack)
@@ -163,12 +183,6 @@ struct AnalyticsDashboardView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
-    private var shareButton: some View {
-        Button(action: shareAnalytics) {
-            Image(systemName: "square.and.arrow.up")
-        }
-    }
-    
     private var refreshButton: some View {
         Button(action: {
             viewModel.refreshMetrics()
@@ -202,9 +216,13 @@ struct AnalyticsDashboardView: View {
             applicationActivities: nil
         )
         
+        // Fix for iPad presentation
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first,
            let rootVC = window.rootViewController {
+            av.popoverPresentationController?.sourceView = window
+            av.popoverPresentationController?.sourceRect = CGRect(x: window.bounds.midX, y: window.bounds.midY, width: 0, height: 0)
+            av.popoverPresentationController?.permittedArrowDirections = []
             rootVC.present(av, animated: true)
         }
     }
