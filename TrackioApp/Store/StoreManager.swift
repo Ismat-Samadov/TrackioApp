@@ -14,14 +14,17 @@ import SwiftUI
 class StoreManager: ObservableObject {
     static let shared = StoreManager()
     
-    @Published private(set) var hasFullAccess = false
+    @Published var hasFullAccess = false  // Remove private(set)
     @Published private(set) var products: [Product] = []
-    @Published var purchaseError: String? // Changed to be publicly writable
+    @Published var purchaseError: String?
     @Published var isLoading = false
     
     private let productIdentifier = "com.yourapp.trackio.fullaccess"
     
     init() {
+        // Load saved access state
+        hasFullAccess = UserDefaults.standard.bool(forKey: "hasFullAccess")
+        
         Task {
             await checkPurchaseStatus()
         }
@@ -39,7 +42,9 @@ class StoreManager: ObservableObject {
             }
         }
         
+        #if !DEBUG
         hasFullAccess = false
+        #endif
     }
     
     func loadProducts() async {
