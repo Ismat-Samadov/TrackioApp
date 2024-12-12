@@ -7,7 +7,7 @@ struct ContentView: View {
     @StateObject private var notificationManager = NotificationManager()
     @StateObject private var storeManager = StoreManager.shared
     @State private var selectedTab = 0
-    @State private var showingPaywall = true
+    @State private var showingPaywall = false
     
     // MARK: - Body
     var body: some View {
