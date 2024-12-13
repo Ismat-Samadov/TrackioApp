@@ -4,9 +4,9 @@
 //
 //  Created by Ismat Samadov on 12.12.24.
 //
+//private let productIdentifier = "art.TrackioApp.trackio.fullaccess"
 
 // Store/StoreManager.swift
-
 import StoreKit
 import SwiftUI
 
@@ -14,20 +14,61 @@ import SwiftUI
 class StoreManager: ObservableObject {
     static let shared = StoreManager()
     
-    @Published var hasFullAccess = false  // Remove private(set)
+    @Published var hasFullAccess = false
     @Published private(set) var products: [Product] = []
     @Published var purchaseError: String?
     @Published var isLoading = false
+    @Published private(set) var isTrialActive = false
+    @Published private(set) var trialDaysRemaining: Int = 0
     
-    private let productIdentifier = "art.TrackioApp.trackio.fullaccess"
+    private let productIdentifier = "com.yourapp.trackio.fullaccess"
+    private let trialDuration: TimeInterval = 7 * 24 * 60 * 60 // 7 days in seconds
     
     init() {
         // Load saved access state
         hasFullAccess = UserDefaults.standard.bool(forKey: "hasFullAccess")
+        checkTrialStatus()
         
         Task {
             await checkPurchaseStatus()
         }
+    }
+    
+    private func checkTrialStatus() {
+        let defaults = UserDefaults.standard
+        
+        // Check if trial has been started before
+        if let trialStartDate = defaults.object(forKey: "trialStartDate") as? Date {
+            let currentDate = Date()
+            let trialEndDate = trialStartDate.addingTimeInterval(trialDuration)
+            
+            if currentDate < trialEndDate {
+                isTrialActive = true
+                trialDaysRemaining = Calendar.current.dateComponents([.day], from: currentDate, to: trialEndDate).day ?? 0
+            } else {
+                isTrialActive = false
+                trialDaysRemaining = 0
+            }
+        } else {
+            // Start trial if it hasn't been started before
+            startTrial()
+        }
+        
+        updateAccessStatus()
+    }
+    
+    private func startTrial() {
+        let defaults = UserDefaults.standard
+        let trialStartDate = Date()
+        defaults.set(trialStartDate, forKey: "trialStartDate")
+        
+        isTrialActive = true
+        trialDaysRemaining = 7
+        updateAccessStatus()
+    }
+    
+    private func updateAccessStatus() {
+        hasFullAccess = UserDefaults.standard.bool(forKey: "hasFullAccess") || isTrialActive
     }
     
     func checkPurchaseStatus() async {
@@ -38,12 +79,13 @@ class StoreManager: ObservableObject {
             
             if transaction.productID == productIdentifier {
                 hasFullAccess = true
+                UserDefaults.standard.set(true, forKey: "hasFullAccess")
                 return
             }
         }
         
         #if !DEBUG
-        hasFullAccess = false
+        checkTrialStatus()
         #endif
     }
     
@@ -76,6 +118,7 @@ class StoreManager: ObservableObject {
                 
                 await transaction.finish()
                 hasFullAccess = true
+                UserDefaults.standard.set(true, forKey: "hasFullAccess")
                 
             case .userCancelled:
                 purchaseError = "Purchase cancelled"

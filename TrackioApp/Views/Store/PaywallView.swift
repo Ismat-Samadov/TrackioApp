@@ -6,7 +6,6 @@
 //
 
 // Views/Store/PaywallView.swift
-
 import SwiftUI
 import StoreKit
 
@@ -22,13 +21,23 @@ struct PaywallView: View {
                     .font(.system(size: 60))
                     .foregroundColor(.blue)
                 
-                Text("Unlock Full Access")
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                Text("Track unlimited habits and get detailed analytics")
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.secondary)
+                if storeManager.isTrialActive {
+                    Text("Free Trial Active")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    Text("\(storeManager.trialDaysRemaining) days remaining")
+                        .font(.title3)
+                        .foregroundColor(.blue)
+                } else {
+                    Text("Trial Ended")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    Text("Continue enjoying full access")
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.secondary)
+                }
             }
             .padding(.top, 40)
             
@@ -44,18 +53,26 @@ struct PaywallView: View {
             
             // Purchase Button
             if let product = storeManager.products.first {
-                Button {
-                    Task {
-                        await storeManager.purchase()
+                VStack(spacing: 8) {
+                    if !storeManager.isTrialActive {
+                        Text("One-time purchase, no subscription")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
                     }
-                } label: {
-                    Text("Unlock Now for \(product.displayPrice)")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(12)
+                    
+                    Button {
+                        Task {
+                            await storeManager.purchase()
+                        }
+                    } label: {
+                        Text(storeManager.isTrialActive ? "Upgrade Early for \(product.displayPrice)" : "Unlock Now for \(product.displayPrice)")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(12)
+                    }
                 }
                 .padding(.horizontal)
             } else {
