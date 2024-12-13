@@ -19,7 +19,7 @@ class StoreManager: ObservableObject {
     @Published var purchaseError: String?
     @Published var isLoading = false
     
-    private let productIdentifier = "com.yourapp.trackio.fullaccess"
+    private let productIdentifier = "art.TrackioApp.trackio.fullaccess"
     
     init() {
         // Load saved access state
