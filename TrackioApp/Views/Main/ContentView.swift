@@ -19,21 +19,16 @@ struct ContentView: View {
             }
         }
         .task {
-            // Request notification permissions when app launches
+            // Handle notifications synchronously
             notificationManager.requestAuthorization()
             
-            // Check purchase status
+            // Handle async operations
             await storeManager.checkPurchaseStatus()
-            
-            // Load available products
             await storeManager.loadProducts()
             
-            // For development/testing only
             #if DEBUG
-            await MainActor.run {
-                UserDefaults.standard.set(true, forKey: "isPurchased")
-                await storeManager.checkPurchaseStatus()
-            }
+            UserDefaults.standard.set(true, forKey: "isPurchased")
+            await storeManager.checkPurchaseStatus()
             #endif
         }
     }
@@ -53,10 +48,12 @@ struct ContentView: View {
                 }
                 .tag(1)
         }
-        .onChange(of: selectedTab) { _, _ in
-            let haptic = UIImpactFeedbackGenerator(style: .light)
-            haptic.prepare()
-            haptic.impactOccurred()
+        .onChange(of: selectedTab) { old, new in
+            if old != new {
+                let haptic = UIImpactFeedbackGenerator(style: .light)
+                haptic.prepare()
+                haptic.impactOccurred()
+            }
         }
     }
 }
