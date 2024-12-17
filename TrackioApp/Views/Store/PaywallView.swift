@@ -21,23 +21,13 @@ struct PaywallView: View {
                     .font(.system(size: 60))
                     .foregroundColor(.blue)
                 
-                if storeManager.isTrialActive {
-                    Text("Free Trial Active")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    Text("\(storeManager.trialDaysRemaining) days remaining")
-                        .font(.title3)
-                        .foregroundColor(.blue)
-                } else {
-                    Text("Trial Ended")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    Text("Continue enjoying full access")
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.secondary)
-                }
+                Text("Unlock Trackio")
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                Text("One-time purchase to unlock all features")
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.secondary)
             }
             .padding(.top, 40)
             
@@ -46,6 +36,8 @@ struct PaywallView: View {
                 FeatureRow(icon: "infinity", title: "Unlimited Habits", description: "Track as many habits as you want")
                 FeatureRow(icon: "chart.bar.fill", title: "Detailed Analytics", description: "Get insights into your progress")
                 FeatureRow(icon: "icloud.fill", title: "Data Backup", description: "Keep your data safe")
+                FeatureRow(icon: "bell.fill", title: "Reminders", description: "Set custom reminders for your habits")
+                FeatureRow(icon: "square.and.arrow.up", title: "Export Data", description: "Export your data anytime")
             }
             .padding(.horizontal)
             
@@ -53,26 +45,18 @@ struct PaywallView: View {
             
             // Purchase Button
             if let product = storeManager.products.first {
-                VStack(spacing: 8) {
-                    if !storeManager.isTrialActive {
-                        Text("One-time purchase, no subscription")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+                Button {
+                    Task {
+                        await storeManager.purchase()
                     }
-                    
-                    Button {
-                        Task {
-                            await storeManager.purchase()
-                        }
-                    } label: {
-                        Text(storeManager.isTrialActive ? "Upgrade Early for \(product.displayPrice)" : "Unlock Now for \(product.displayPrice)")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(12)
-                    }
+                } label: {
+                    Text("Buy Now - \(product.displayPrice)")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(12)
                 }
                 .padding(.horizontal)
             } else {
@@ -80,7 +64,7 @@ struct PaywallView: View {
             }
             
             // Restore Purchases
-            Button("Restore Purchases") {
+            Button("Restore Previous Purchase") {
                 Task {
                     await storeManager.restorePurchases()
                 }
@@ -105,8 +89,8 @@ struct PaywallView: View {
                 await storeManager.loadProducts()
             }
         }
-        .onChange(of: storeManager.hasFullAccess) { _, hasAccess in
-            if hasAccess {
+        .onChange(of: storeManager.isPurchased) { _, isPurchased in
+            if isPurchased {
                 dismiss()
             }
         }
