@@ -7,30 +7,33 @@ struct ContentView: View {
     @StateObject private var notificationManager = NotificationManager()
     @StateObject private var storeManager = StoreManager.shared
     @State private var selectedTab = 0
-    @State private var showingPaywall = false
     
     // MARK: - Body
     var body: some View {
         Group {
-            if storeManager.hasFullAccess {
+            if storeManager.isPurchased {
                 mainContent
             } else {
                 PaywallView()
                     .interactiveDismissDisabled()
             }
         }
-        .onAppear {
+        .task {
             // Request notification permissions when app launches
             notificationManager.requestAuthorization()
             
             // Check purchase status
-            Task {
-                await storeManager.checkPurchaseStatus()
-            }
+            await storeManager.checkPurchaseStatus()
+            
+            // Load available products
+            await storeManager.loadProducts()
             
             // For development/testing only
             #if DEBUG
-            storeManager.hasFullAccess = true  // Simply set the property directly
+            await MainActor.run {
+                UserDefaults.standard.set(true, forKey: "isPurchased")
+                await storeManager.checkPurchaseStatus()
+            }
             #endif
         }
     }
@@ -50,16 +53,11 @@ struct ContentView: View {
                 }
                 .tag(1)
         }
-        .onChange(of: selectedTab) { oldValue, newValue in
-            triggerHapticFeedback()
+        .onChange(of: selectedTab) { _, _ in
+            let haptic = UIImpactFeedbackGenerator(style: .light)
+            haptic.prepare()
+            haptic.impactOccurred()
         }
-    }
-    
-    // MARK: - Helper Methods
-    private func triggerHapticFeedback() {
-        let haptic = UIImpactFeedbackGenerator(style: .light)
-        haptic.prepare()
-        haptic.impactOccurred()
     }
 }
 
