@@ -1,0 +1,26 @@
+Export Compliance Information for Trackio
+
+1. Encryption Status:
+- This application does NOT use encryption
+- We only use standard HTTPS/TLS for network communication
+- No proprietary encryption methods are implemented
+- All data storage uses system-provided encryption only
+
+2. App Functionality:
+- Habit tracking
+- Analytics and progress monitoring
+- Local data storage
+- Basic user preferences
+
+3. Data Storage:
+- UserDefaults for app settings
+- Local file storage for habit data
+- No custom encryption implementation
+
+4. Network Communication:
+- No custom network communication implemented
+- Only system-standard HTTPS/TLS if needed for future features
+
+5. Compliance Statement:
+This app qualifies for exemption under Category 5, Part 2 of the U.S. Export Administration Regulations.
+It does not implement or incorporate any proprietary or non-standard encryption methods.
