@@ -29,9 +29,22 @@
 		DD7230B82D06BB0800CD20D3 /* TrackioAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackioAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DDD60BAE2D1EEA1F006BAE18 /* Exceptions for "TrackioApp" folder in "TrackioApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DD72309D2D06BB0700CD20D3 /* TrackioApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		DD7230A02D06BB0700CD20D3 /* TrackioApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DDD60BAE2D1EEA1F006BAE18 /* Exceptions for "TrackioApp" folder in "TrackioApp" target */,
+			);
 			path = TrackioApp;
 			sourceTree = "<group>";
 		};
@@ -400,6 +413,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TrackioApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = ITSAppUsesNonExemptEncryption;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -435,6 +449,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TrackioApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = ITSAppUsesNonExemptEncryption;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
