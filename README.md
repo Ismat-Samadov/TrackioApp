@@ -2,7 +2,7 @@
 
 A modern iOS habit tracking application built with SwiftUI that helps users build and maintain healthy habits through intuitive tracking and detailed analytics.
 
-![Habit Tracking Screen](habits.png)
+<img src="habits.png" width="300" alt="Habit Tracking Screen">
 
 ## Features
 
@@ -12,7 +12,7 @@ A modern iOS habit tracking application built with SwiftUI that helps users buil
 - **Weekly tracking system** - Track completions for each day of the week with interactive checkmarks
 - **Streak counting** - Monitor your current streaks to stay motivated
 
-![New Habit Creation](analytics_new_habit.png)
+<img src="analytics_new_habit.png" width="300" alt="New Habit Creation">
 
 ### 📊 Analytics Dashboard
 - **Multiple time period analysis** - View your data across different time frames (week, month, year)
@@ -20,9 +20,11 @@ A modern iOS habit tracking application built with SwiftUI that helps users buil
 - **Habit performance metrics** - Track total habits, active habits, completion rates, and best streaks
 - **Interactive charts** - Weekly progress and completion distribution visualizations
 
-![Analytics Dashboard - Week View](analytics_last_week.png)
-![Analytics Dashboard - Month View](analytics_last_month.png)
-![Analytics Dashboard - Year View](analytics_last_year.png)
+<div style="display: flex; justify-content: space-between;">
+  <img src="analytics_last_week.png" width="250" alt="Analytics Dashboard - Week View">
+  <img src="analytics_last_month.png" width="250" alt="Analytics Dashboard - Month View">
+  <img src="analytics_last_year.png" width="250" alt="Analytics Dashboard - Year View">
+</div>
 
 ### 📱 User Experience
 - **Clean, modern interface** - Intuitive design focused on ease of use
