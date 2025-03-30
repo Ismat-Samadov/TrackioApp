@@ -1,11 +1,6 @@
-//
-//  CheckmarkView.swift
-//  TrackioApp
-//
-//  Created by Ismat Samadov on 10.12.24.
-//
-
 // Views/Habits/Components/CheckmarkView.swift
+// Replace your existing CheckmarkView.swift with this content
+
 import SwiftUI
 
 struct CheckmarkView: View {
@@ -21,6 +16,7 @@ struct CheckmarkView: View {
     
     var body: some View {
         Button {
+            print("CheckmarkView button tapped for date: \(date)")
             withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
                 scale = 1.3
                 action()
@@ -41,7 +37,9 @@ struct CheckmarkView: View {
                 )
                 .scaleEffect(scale)
         }
-        .disabled(!isToday)
+        // Remove the disabled(!isToday) to allow toggling any day
+        // .disabled(!isToday)
+        // Change the opacity to be consistent
         .opacity(isToday ? 1 : 0.6)
     }
 }

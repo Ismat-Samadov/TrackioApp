@@ -1,4 +1,5 @@
-// ViewModels/HabitStore.swift
+// ViewModels/FixedHabitStore.swift
+// Replace your existing HabitStore.swift with this content
 
 import SwiftUI
 import Combine
@@ -33,19 +34,34 @@ class HabitStore: ObservableObject {
     }
     
     func toggleHabit(_ habitId: UUID, date: Date) {
-        guard let index = habits.firstIndex(where: { $0.id == habitId }),
-              Calendar.current.isDateInToday(date) else { return }
+        print("Toggle habit called for \(habitId) on date \(date)")
+        
+        guard let index = habits.firstIndex(where: { $0.id == habitId }) else {
+            print("❌ Habit not found with ID: \(habitId)")
+            return
+        }
+        
+        // Remove this check to allow toggling any day
+        // if !Calendar.current.isDateInToday(date) {
+        //    print("❌ Date is not today: \(date)")
+        //    return
+        // }
         
         var habit = habits[index]
         let startOfDay = Calendar.current.startOfDay(for: date)
         
+        print("Habit before toggle: \(habit.title), completed dates: \(habit.completedDates.count)")
+        
         if habit.completedDates.contains(startOfDay) {
+            print("✅ Removing date \(startOfDay) from completed dates")
             habit.completedDates.remove(startOfDay)
         } else {
+            print("✅ Adding date \(startOfDay) to completed dates")
             habit.completedDates.insert(startOfDay)
         }
         
         habits[index] = habit
+        print("Habit after toggle: \(habit.title), completed dates: \(habit.completedDates.count)")
     }
     
     // MARK: - Analytics
@@ -114,6 +130,8 @@ class HabitStore: ObservableObject {
         
         return Double(completedDays) / Double(days) * 100
     }
+    
+    // Other methods unchanged...
     
     func getWeekdayDistribution(for habitId: UUID) -> [String: Double] {
         guard let habit = habits.first(where: { $0.id == habitId }) else { return [:] }
