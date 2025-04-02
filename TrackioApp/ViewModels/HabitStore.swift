@@ -202,14 +202,14 @@ class HabitStore: ObservableObject {
     }
     
     private func createSampleHabits() {
-        let samples = [
-            Habit(title: "Exercise", description: "Stay active everyday", emoji: "🏃‍♂️", color: .green),
-            Habit(title: "Reading", description: "Read everyday", emoji: "📚", color: .blue),
-            Habit(title: "Meditation", description: "Mindfulness practice", emoji: "🧘‍♂️", color: .purple),
-            Habit(title: "Sing", description: "Sing everyday", emoji: "🎵", color: .orange)
-        ]
-        habits = samples
-    }
+            let samples = [
+                Habit(title: "Coding", description: "Practice coding everyday", emoji: "💻", color: .blue),
+                Habit(title: "Research", description: "Conduct research daily", emoji: "🔬", color: .purple),
+                Habit(title: "Reading", description: "Read everyday", emoji: "📚", color: .orange),
+                Habit(title: "Exercise", description: "Stay active everyday", emoji: "🏃‍♂️", color: .green)
+            ]
+            habits = samples
+        }
 }
 
 // MARK: - Habit Updates Helper
